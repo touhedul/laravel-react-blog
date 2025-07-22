@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import BlogCard from './components/BlogCard';
-import { Routes,Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Blogs from './components/Blogs';
 import Contact from './components/Contact';
 import CreateBlog from './components/CreateBlog';
+import { ToastContainer, toast } from 'react-toastify';
+
 
 
 
@@ -18,11 +20,13 @@ function App() {
         </h1>
       </div>
 
-    <Routes>
-      <Route path='/' element={<Blogs />}/>
-      <Route path='/create-blog' element={<CreateBlog />}/>
-    </Routes>
-      
+      <Routes>
+        <Route path='/' element={<Blogs />} />
+        <Route path='/create-blog' element={<CreateBlog />} />
+      </Routes>
+
+        <ToastContainer />
+
 
     </>
   )

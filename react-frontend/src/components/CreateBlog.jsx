@@ -1,12 +1,34 @@
 import React, { useState } from 'react'
-import  Editor  from 'react-simple-wysiwyg';
+import Editor from 'react-simple-wysiwyg';
+import { useForm } from "react-hook-form";
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+
 
 const CreateBlog = () => {
 
+    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const navigate = useNavigate();
+
     const [html, setHtml] = useState('');
-  
+
     function onChange(e) {
         setHtml(e.target.value);
+    }
+
+    const createBlog = (data) => {
+        const allData = { ...data, "description": html };
+        console.log(allData);
+        fetch('http://laravel-react-blog.test/laravel-backend/public/api/blogs', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(allData)
+        })
+        toast("Blog Created Successfully")
+        navigate('/');
+
     }
 
     return (
@@ -16,17 +38,23 @@ const CreateBlog = () => {
                 <button className="btn btn-dark">Back</button>
             </div>
 
-            <form>
+            <form onSubmit={handleSubmit(createBlog)}>
                 {/* Title */}
                 <div className="mb-3">
                     <label htmlFor="title" className="form-label">Title</label>
-                    <input type="text" className="form-control" id="title" placeholder="Title" />
+                    <input
+                        {...register('title', { required: true })}
+                        type="text"
+                        className={`form-control ${errors.title && 'is-invalid'}`}
+
+                        id="title" placeholder="Title" />
+                    {errors.title && <span className="text-danger">Title is required</span>}
                 </div>
 
                 {/* Description */}
                 <div className="mb-3">
                     <label htmlFor="description" className="form-label">Description</label>
-                        <Editor 
+                    <Editor
                         containerProps={{ style: { height: '300px' } }}
                         value={html} onChange={onChange} />
 
@@ -41,7 +69,13 @@ const CreateBlog = () => {
                 {/* Author */}
                 <div className="mb-3">
                     <label htmlFor="author" className="form-label">Author</label>
-                    <input type="text" className="form-control" id="author" placeholder="Author" />
+                    <input
+                        {...register('author', { required: true })}
+                        type="text"
+                        className={`form-control ${errors.author && 'is-invalid'}`}
+                        id="author" placeholder="Author" />
+                    {errors.author && <span>This field is required</span>}
+
                 </div>
 
                 {/* Create Button */}
