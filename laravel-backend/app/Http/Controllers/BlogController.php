@@ -22,7 +22,12 @@ class BlogController extends Controller
      */
     public function store(StoreBlogRequest $request)
     {
-        $blog = Blog::create($request->validated());
+        $blog = Blog::create([
+            'title' => $request->input('title'),
+            'description' => $request->input('description'),
+            'image' => $request->file('image')->store('images', 'public'),
+            'author' => $request->input('author')
+        ]);
         return new BlogResource($blog);
     }
 

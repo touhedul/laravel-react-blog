@@ -11,24 +11,41 @@ const CreateBlog = () => {
     const navigate = useNavigate();
 
     const [html, setHtml] = useState('');
+    const [image, setImage] = useState(null);
 
     function onChange(e) {
         setHtml(e.target.value);
     }
 
+    function handleFileChange(e) {
+        setImage(e.target.files[0]);
+    }
+
     const createBlog = (data) => {
-        const allData = { ...data, "description": html };
-        console.log(allData);
+        const formData = new FormData();
+        formData.append('title', data.title);
+        formData.append('author', data.author);
+        formData.append('description', html);
+        if (image) {
+            formData.append('image', image);
+        }
+
         fetch('http://laravel-react-blog.test/laravel-backend/public/api/blogs', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Accept': 'application/json',
             },
-            body: JSON.stringify(allData)
+            body: formData,
         })
-        toast("Blog Created Successfully")
-        navigate('/');
-
+        .then(response => response.json())
+        .then(result => {
+            toast("Blog Created Successfully");
+            // navigate('/');
+        })
+        .catch(error => {
+            toast.error("Error creating blog");
+            console.error("Error:", error);
+        });
     }
 
     return (
@@ -63,7 +80,7 @@ const CreateBlog = () => {
                 {/* Image */}
                 <div className="mb-3">
                     <label htmlFor="image" className="form-label">Image</label>
-                    <input className="form-control" type="file" id="image" />
+                    <input onChange={handleFileChange} className="form-control" type="file" id="image" />
                 </div>
 
                 {/* Author */}
