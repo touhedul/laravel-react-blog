@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class BlogResource extends JsonResource
 {
@@ -18,7 +19,7 @@ class BlogResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
-            'image' => $this->image,
+            'image' => $this->image ? Storage::url($this->image) : null,
             'author' => $this->author,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

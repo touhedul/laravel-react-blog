@@ -1,19 +1,22 @@
 import React from 'react'
 
-const BlogCard = () => {
+const BlogCard = ({blog}) => {
+
+    const setImage = (image) =>{
+        return image ? image : "https://placehold.co/600x400";
+    }
     return (
         <div className="col-12 col-md-2 col-lg-3 mb-4">
             <div className="card border-0 shadow-lg">
                 <img
-                    src="https://placehold.co/600x400"
+                    src={setImage(blog.image)}
                     className="card-img-top"
                     alt="Card placeholder"
                 />
                 <div className="card-body">
-                    <h2 className="h5">Dummy Heading</h2>
+                    <h2 className="h5">{blog.title}</h2>
                     <p>
-                        Some quick example text to build on the card title and make up the
-                        bulk of the card's content.
+                        {blog.description}
                     </p>
                     <div className="d-flex justify-content-between">
                         <a href="#" className="btn btn-dark">
