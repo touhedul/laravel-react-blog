@@ -6,6 +6,7 @@ import Blogs from './components/Blogs';
 import Contact from './components/Contact';
 import CreateBlog from './components/CreateBlog';
 import { ToastContainer, toast } from 'react-toastify';
+import BlogDetails from './components/BlogDetails';
 
 
 
@@ -23,6 +24,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Blogs />} />
         <Route path='/create-blog' element={<CreateBlog />} />
+        <Route path='/blog/:id' element={<BlogDetails />} />
       </Routes>
 
         <ToastContainer />
