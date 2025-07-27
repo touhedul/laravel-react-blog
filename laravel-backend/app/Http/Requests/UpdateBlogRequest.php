@@ -24,7 +24,7 @@ class UpdateBlogRequest extends FormRequest
         return [
             'title' => 'sometimes|required|string|max:255',
             'description' => 'sometimes|required|string',
-            'image' => 'nullable|string',
+            'image' => 'sometimes|required|image',
             'author' => 'sometimes|required|string|max:255'
         ];
     }

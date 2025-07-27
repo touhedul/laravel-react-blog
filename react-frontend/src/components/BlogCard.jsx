@@ -1,9 +1,23 @@
 import React from 'react'
+import { toast } from 'react-toastify';
 
-const BlogCard = ({blog}) => {
+const BlogCard = ({ blogs, setBlogs, blog }) => {
 
-    const setImage = (image) =>{
+    const setImage = (image) => {
         return image ? image : "https://placehold.co/600x400";
+    }
+
+    const deleteBlog = async (id) => {
+
+        if (confirm('Are You Sure?')) {
+            const response = fetch('http://laravel-react-blog.test/laravel-backend/public/api/blogs/' + id, {
+                method: 'DELETE'
+            }
+            )
+            const newBlogs = blogs.filter((blog) => blog.id != id);
+            setBlogs(newBlogs);
+            toast('Delete successful');
+        }
     }
     return (
         <div className="col-12 col-md-2 col-lg-3 mb-4">
@@ -21,16 +35,10 @@ const BlogCard = ({blog}) => {
                         <a href={`/blog/${blog.id}`} className="btn btn-dark">
                             Details
                         </a>
-                        <a href="#" className="text-dark">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="16"
-                                height="16"
-                                fill="currentColor"
-                                viewBox="0 0 16 16"
-                            >
-                                <path d="M12.146 5.5a.5.5 0 0 1 .708.708l-10 10a.5.5 0 0 1-.708-.708l10-10z" />
-                            </svg>
+                        <a href={`/blog-edit/${blog.id}`} className="text-dark"> Edit
+                        </a>
+                        <a href="#" onClick={() => { deleteBlog(blog.id) }} className="text-danger">
+                            Delete
                         </a>
                     </div>
                 </div>
